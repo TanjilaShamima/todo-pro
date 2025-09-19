@@ -1,5 +1,5 @@
-import { http, HttpResponse } from 'msw'
-import { db, delay, maybeFail } from '../db'
+import { http, HttpResponse } from 'msw';
+import { db, delay, maybeFail } from '../db';
 
 
 export const todoHandlers = [
@@ -7,6 +7,7 @@ export const todoHandlers = [
         await delay(200 + Math.random() * 500); maybeFail()
         const url = new URL(request.url)
         const page = Number(url.searchParams.get('page') ?? 1)
+        const limit = Number(url.searchParams.get('limit') ?? 5)
         const q = (url.searchParams.get('q') ?? '').toLowerCase()
         const status = url.searchParams.get('status') ?? 'all'
         const sort = url.searchParams.get('sort') ?? 'createdAt'
@@ -18,7 +19,7 @@ export const todoHandlers = [
         items.sort((a, b) => (a[sort] > b[sort] ? -1 : 1))
 
 
-        const pageSize = 10
+        const pageSize = limit
         const start = (page - 1) * pageSize
         const paged = items.slice(start, start + pageSize)
         return HttpResponse.json({ items: paged, total: items.length, page, pageSize })

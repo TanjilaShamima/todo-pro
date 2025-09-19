@@ -1,12 +1,16 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+
+import Button from "@/@components/ui/Button";
+import Input from "@/@components/ui/Input";
 import { getToken } from "@/@lib/tokens";
 import { RegisterInput, registerSchema } from "@/@schemas/zodSchema";
 import { loginSuccess } from "@/@store/slices/authSlice";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 
 export default function RegisterFeature() {
   const {
@@ -16,6 +20,7 @@ export default function RegisterFeature() {
   } = useForm<RegisterInput>({ resolver: zodResolver(registerSchema) });
   const router = useRouter();
   const dispatch = useDispatch();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     const t = getToken();
@@ -23,6 +28,7 @@ export default function RegisterFeature() {
   }, [router]);
 
   async function onSubmit(values: RegisterInput) {
+    setSubmitError(null);
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,41 +39,79 @@ export default function RegisterFeature() {
       dispatch(loginSuccess(data));
       router.push("/app/todos");
     } else if (res.status === 409) {
-      alert("Email already exists");
+      setSubmitError("Email already exists.");
     } else {
-      alert("Registration failed");
+      setSubmitError("Registration failed. Please try again.");
     }
   }
 
   return (
-    <main className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-4">Create account</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block mb-1">Name</label>
-          <input className="input" {...register("name")} />
+    <main className="min-h-screen grid place-items-center p-4">
+      <section className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/30 backdrop-blur shadow-md p-6">
+        <header className="mb-6">
+          <h1 className="text-2xl font-semibold">Create your account</h1>
+          <p className="text-sm opacity-80">
+            Join Todo Pro and stay organized.
+          </p>
+        </header>
+        {submitError && (
+          <p role="alert" className="mb-3 text-sm text-red-600">
+            {submitError}
+          </p>
+        )}
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
+          <Input
+            label="Name"
+            placeholder="Your name"
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            {...register("name")}
+          />
           {errors.name && (
-            <p className="text-red-600 text-sm">{errors.name.message}</p>
+            <p id="name-error" className="text-red-600 text-sm">
+              {errors.name.message}
+            </p>
           )}
-        </div>
-        <div>
-          <label className="block mb-1">Email</label>
-          <input className="input" type="email" {...register("email")} />
+
+          <Input
+            label="Email"
+            type="email"
+            placeholder="you@example.com"
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            {...register("email")}
+          />
           {errors.email && (
-            <p className="text-red-600 text-sm">{errors.email.message}</p>
+            <p id="email-error" className="text-red-600 text-sm">
+              {errors.email.message}
+            </p>
           )}
-        </div>
-        <div>
-          <label className="block mb-1">Password</label>
-          <input className="input" type="password" {...register("password")} />
+
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Create a password"
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? "password-error" : undefined}
+            {...register("password")}
+          />
           {errors.password && (
-            <p className="text-red-600 text-sm">{errors.password.message}</p>
+            <p id="password-error" className="text-red-600 text-sm">
+              {errors.password.message}
+            </p>
           )}
-        </div>
-        <button className="btn" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting…" : "Register"}
-        </button>
-      </form>
+
+          <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
+            {isSubmitting ? "Creating…" : "Create account"}
+          </Button>
+        </form>
+        <p className="mt-4 text-sm opacity-80">
+          Already have an account?{" "}
+          <Link className="underline" href="/login">
+            Login
+          </Link>
+        </p>
+      </section>
     </main>
   );
 }

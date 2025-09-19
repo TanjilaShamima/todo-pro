@@ -1,8 +1,9 @@
+import { TodoType } from '@/@types/todo';
 import { faker } from '@faker-js/faker'
 export type User = { id: string; name: string; email: string; password: string }
 export const db = {
     users: [] as User[],
-    todos: [] as any[]
+    todos: [] as TodoType[]
 }
 
 

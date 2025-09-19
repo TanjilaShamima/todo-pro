@@ -2,14 +2,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { todosApi } from './services/todoApi'
-import uiReducer from './slices/uiSlice'
 import authReducer from './slices/authSlice'
+import todosReducer from './slices/todoSlice'
+import uiReducer from './slices/uiSlice'
 
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         ui: uiReducer,
+        todos: todosReducer,
         [todosApi.reducerPath]: todosApi.reducer,
     },
     middleware: (gDM) => gDM().concat(todosApi.middleware),

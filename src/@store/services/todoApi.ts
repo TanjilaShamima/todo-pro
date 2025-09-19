@@ -1,11 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { getToken } from '@/@lib/tokens'
-import { TodoInput } from '@/@schemas/zodSchema'
+import { getToken } from '@/@lib/tokens';
+import { TodoInput } from '@/@schemas/zodSchema';
 import { TodoType } from '@/@types/todo';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
 
-export type ListParams = { page?: number; q?: string; status?: TodoType['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority' }
+export type ListParams = { page?: number; limit?: number; q?: string; status?: TodoType['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority' }
 export type Paginated<T> = { items: T[]; page: number; pageSize: number; total: number }
 
 export const todosApi = createApi({
@@ -20,7 +20,7 @@ export const todosApi = createApi({
     tagTypes: ['Todos'],
     endpoints: (b) => ({
         listTodos: b.query<Paginated<TodoType>, ListParams | void>({
-            query: (p) => ({ url: '/todos', params: p }),
+            query: (p) => ({ url: '/todos', params: { limit: 5, ...(p || {}) } }),
             providesTags: (res) => res?.items ? [
                 ...res.items.map(t => ({ type: 'Todos' as const, id: t.id })),
                 { type: 'Todos' as const, id: 'LIST' }

@@ -1,26 +1,34 @@
 "use client";
 import { TodoInput, todoSchema } from "@/@schemas/zodSchema";
-import { useCreateTodoMutation } from "@/@store/services/todoApi";
+import type { AppDispatch } from "@/@store";
+import { todosApi } from "@/@store/services/todoApi";
+import { createTodo } from "@/@store/slices/todoSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { z } from "zod";
 
 export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
-  const [createTodo] = useCreateTodoMutation();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<TodoInput>({ resolver: zodResolver(todoSchema) });
+  } = useForm<z.input<typeof todoSchema>>({
+    resolver: zodResolver(todoSchema),
+    defaultValues: { status: "todo", priority: "medium", tags: [] },
+  });
 
   return (
     <form
       onSubmit={handleSubmit(async (v) => {
-        console.log("here");
-        const res = await createTodo(v);
-        console.log("here");
-        // if success, close the modal
-        if ("data" in res) onSuccess?.();
+        const parsed: TodoInput = todoSchema.parse(v);
+        await dispatch(createTodo(parsed)).unwrap();
+        // if success, close the modal and refetch list
+        onSuccess?.();
+        // invalidate list so RTK Query refetches current page
+        dispatch(todosApi.util.invalidateTags([{ type: "Todos", id: "LIST" }]));
         reset();
       })}
       className="grid gap-3"
