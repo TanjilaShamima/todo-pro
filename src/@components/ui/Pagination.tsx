@@ -23,7 +23,7 @@ export default function Pagination({
   return (
     <nav className="flex items-center gap-2" aria-label="Pagination">
       <Button
-        variant="ghost"
+        variant={page <= 1 ? "ghost" : "primary"}
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
       >
@@ -32,7 +32,7 @@ export default function Pagination({
       {pages.map((p) => (
         <Button
           key={p}
-          variant={p === page ? "primary" : "ghost"}
+          variant={p === page ? "selected" : "primary"}
           aria-current={p === page ? "page" : undefined}
           onClick={() => onPageChange(p)}
         >
@@ -40,7 +40,7 @@ export default function Pagination({
         </Button>
       ))}
       <Button
-        variant="ghost"
+        variant={page >= totalPages ? "ghost" : "primary"}
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
       >
