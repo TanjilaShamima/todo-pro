@@ -7,6 +7,7 @@ export default function Home() {
   const router = useRouter();
   useEffect(() => {
     const t = getToken();
+    console.log("t",t);
     router.replace(t ? "/app/todos" : "/login");
   }, [router]);
   return <div className="p-6">Redirecting…</div>;

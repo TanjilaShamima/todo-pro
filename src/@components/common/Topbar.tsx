@@ -9,6 +9,8 @@ export default function Topbar() {
   const dispatch = useDispatch();
   const user = useSelector((s: RootState) => s.auth.user);
   const theme = useSelector((s: RootState) => s.ui.theme);
+
+  console.log("selected user:", user);
   return (
     <header className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b">
       <div className="max-w-5xl mx-auto p-3 flex items-center gap-3 justify-between">
@@ -25,9 +27,15 @@ export default function Topbar() {
             {theme === "light" ? "🌞 Light" : "🌙 Dark"}
           </button>
           {user && <span className="text-sm opacity-80">{user.name}</span>}
-          <button className="btn" onClick={() => dispatch(logout())}>
-            Logout
-          </button>
+          {user ? (
+            <button className="btn" onClick={() => dispatch(logout())}>
+              Logout
+            </button>
+          ) : (
+            <Link href="/login" className="btn">
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -38,8 +38,8 @@ export default function TodosFeature() {
 
   return (
     <>
-      <main className="max-w-4xl mx-auto p-4">
-        <div className="flex items-center justify-between mb-4">
+      <main className="max-w-4xl mx-auto p-4 min-h-screen">
+        <div className="flex items-center justify-between my-5">
           <h1 className="text-2xl font-semibold">Todos</h1>
           <button className="btn" onClick={() => setOpen(true)}>
             + Quick Add

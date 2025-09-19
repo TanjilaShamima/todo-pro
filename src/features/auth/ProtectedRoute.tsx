@@ -12,7 +12,7 @@ export default function ProtectedRoute({
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { token, booted } = useSelector((s: RootState) => s.auth);
+  const { token, user, booted } = useSelector((s: RootState) => s.auth);
 
   useEffect(() => {
     dispatch(boot());
@@ -20,9 +20,9 @@ export default function ProtectedRoute({
 
   useEffect(() => {
     if (!booted) return;
-    if (token === null) router.replace("/login");
-  }, [token, booted, router]);
+    if (token === null || !user) router.replace("/");
+  }, [token, user, booted, router]);
   if (!booted) return <div className="p-6">Checking session…</div>;
-  if (token === null) return null;
+  if (token === null || !user) return null;
   return <>{children}</>;
 }

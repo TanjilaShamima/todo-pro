@@ -9,7 +9,6 @@ export default function ProtectedLayout({
   return (
     <ProtectedRoute>
       <section>
-        <Topbar />
         {children}
       </section>
     </ProtectedRoute>

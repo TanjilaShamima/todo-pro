@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  /* light: pure black text */
 }
 
 @theme inline {
@@ -15,14 +16,82 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #ffffff;
+    /* dark: pure white text by default */
   }
+}
+
+/* Explicit override when html has .dark (set by ThemeClient) */
+.dark {
+  --background: #0a0a0a;
+  /* dark bg */
+  --foreground: #ffffff;
+  /* dark: pure white text */
+}
+
+/* Force light palette when NOT dark, regardless of OS preference */
+html:not(.dark) {
+  --background: #ffffff;
+  /* light bg */
+  --foreground: #000000;
+  /* light: pure black text */
+}
+
+/* Help native controls match theme */
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Ensure common elements inherit global text color */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+label,
+small,
+strong,
+em,
+li,
+dt,
+dd,
+th,
+td,
+input,
+textarea,
+select,
+button {
+  color: var(--foreground);
+}
+
+/* Links inherit and underline matches foreground */
+a {
+  color: inherit;
+  text-decoration-color: currentColor;
+}
+
+/* Placeholder colors per theme */
+html.dark ::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+html:not(.dark) ::placeholder {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .bg-grad-light {
