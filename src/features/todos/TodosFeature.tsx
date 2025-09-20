@@ -3,6 +3,7 @@ import TodoFilter from "@/@components/Todo/TodoFilter";
 import TodoForm from "@/@components/Todo/TodoForm";
 import TodoList from "@/@components/Todo/TodoList";
 import TodoSearch from "@/@components/Todo/TodoSearch";
+import Button from "@/@components/ui/Button";
 import Modal from "@/@components/ui/Modal";
 import type { AppDispatch } from "@/@store";
 import { fetchTodos } from "@/@store/slices/todoSlice";
@@ -41,12 +42,12 @@ export default function TodosFeature() {
       <main className="max-w-4xl mx-auto p-4 min-h-screen">
         <div className="flex items-center justify-between my-5">
           <h1 className="text-2xl font-semibold">Todos</h1>
-          <button className="btn" onClick={() => setOpen(true)}>
+          <Button variant="selected" onClick={() => setOpen(true)}>
             + Quick Add
-          </button>
+          </Button>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="w-full flex flex-wrap justify-between mb-10">
           <TodoSearch value={q} onChange={setQ} />
           <TodoFilter
             status={status}

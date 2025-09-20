@@ -47,7 +47,7 @@ export default function RegisterFeature() {
 
   return (
     <main className="min-h-screen grid place-items-center p-4">
-      <section className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/30 backdrop-blur shadow-md p-6">
+      <section className="w-full max-w-sm rounded-xl border border-app bg-[var(--login-bg)] backdrop-blur shadow-md p-6">
         <header className="mb-6">
           <h1 className="text-2xl font-semibold">Create your account</h1>
           <p className="text-sm opacity-80">

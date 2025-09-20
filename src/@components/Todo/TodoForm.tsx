@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/@components/ui/Button";
 import { TodoInput, todoSchema } from "@/@schemas/zodSchema";
 import type { AppDispatch } from "@/@store";
 import { todosApi } from "@/@store/services/todoApi";
@@ -25,36 +26,44 @@ export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
       onSubmit={handleSubmit(async (v) => {
         const parsed: TodoInput = todoSchema.parse(v);
         await dispatch(createTodo(parsed)).unwrap();
-        // if success, close the modal and refetch list
         onSuccess?.();
-        // invalidate list so RTK Query refetches current page
         dispatch(todosApi.util.invalidateTags([{ type: "Todos", id: "LIST" }]));
         reset();
       })}
-      className="grid gap-3"
+      className="grid gap-3 bg-[var(--surface)] p-4 rounded-lg border border-[var(--border)]"
     >
-      <input className="input" placeholder="Title" {...register("title")} />
+      <input
+        className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2"
+        placeholder="Title"
+        {...register("title")}
+      />
       {errors.title && (
         <p className="text-red-600 text-sm">{errors.title.message}</p>
       )}
       <textarea
-        className="input"
+        className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2 min-h-24"
         placeholder="Description"
         {...register("description")}
       />
       <div className="flex gap-3">
-        <select className="input" {...register("status")}>
+        <select
+          className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none"
+          {...register("status")}
+        >
           <option value="todo">Todo</option>
           <option value="in_progress">In Progress</option>
           <option value="done">Done</option>
         </select>
-        <select className="input" {...register("priority")}>
+        <select
+          className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none"
+          {...register("priority")}
+        >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
         <input
-          className="input"
+          className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none"
           type="datetime-local"
           {...register("dueDate", {
             setValueAs: (v: string) => {
@@ -70,9 +79,11 @@ export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
           {errors.dueDate.message as string}
         </p>
       )}
-      <button className="btn" disabled={isSubmitting}>
-        Create
-      </button>
+      <div className="flex items-center justify-end gap-2 pt-1">
+        <Button type="submit" disabled={isSubmitting}>
+          Create
+        </Button>
+      </div>
     </form>
   );
 }

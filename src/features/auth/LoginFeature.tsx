@@ -44,8 +44,9 @@ export default function LoginFeature() {
   }
 
   return (
-    <main className="min-h-screen grid place-items-center p-4">
-      <section className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/30 backdrop-blur shadow-md p-6">
+    <main className="min-h-screen grid place-items-center p-4 ">
+      {/* Card uses theme tokens for bg/border so dark mode works */}
+      <section className="w-full max-w-sm rounded-xl border border-app bg-[var(--login-bg)] backdrop-blur shadow-md p-6">
         <header className="mb-6">
           <h1 className="text-2xl font-semibold">Welcome back</h1>
           <p className="text-sm opacity-80">Sign in to continue to Todo Pro.</p>

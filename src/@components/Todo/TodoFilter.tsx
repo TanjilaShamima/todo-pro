@@ -9,27 +9,27 @@ export default function TodoFilter({ status, onStatus, sort, onSort }: Props) {
   return (
     <>
       <select
-        className="input"
+        className="input border rounded-md px-3"
         value={status}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           onStatus(e.target.value as Props["status"])
         }
       >
-        <option value="all">All</option>
-        <option value="todo">Todo</option>
-        <option value="in_progress">In Progress</option>
-        <option value="done">Done</option>
+        <option className="text-black" value="all">All</option>
+        <option className="text-black" value="todo">Todo</option>
+        <option className="text-black" value="in_progress">In Progress</option>
+        <option className="text-black" value="done">Done</option>
       </select>
       <select
-        className="input"
+        className="input border rounded-md px-3"
         value={sort}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           onSort(e.target.value as Props["sort"])
         }
       >
-        <option value="createdAt">Created</option>
-        <option value="dueDate">Due</option>
-        <option value="priority">Priority</option>
+        <option className="text-black" value="createdAt">Created</option>
+        <option className="text-black" value="dueDate">Due</option>
+        <option className="text-black" value="priority">Priority</option>
       </select>
     </>
   );

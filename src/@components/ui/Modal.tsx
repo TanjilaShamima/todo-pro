@@ -20,7 +20,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center w-auto"
       role="dialog"
       aria-modal="true"
       aria-label={title || "Dialog"}
@@ -30,7 +30,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative z-10 w-full max-w-lg rounded bg-white dark:bg-neutral-900 shadow p-4">
+      <div className="relative z-10 w-auto max-w-auto rounded bg-white dark:bg-neutral-900 shadow p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button className="btn" onClick={onClose} aria-label="Close">

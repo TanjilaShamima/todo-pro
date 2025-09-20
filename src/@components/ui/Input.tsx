@@ -1,5 +1,6 @@
 "use client";
 import clsx from "clsx";
+
 type Props = React.InputHTMLAttributes<HTMLInputElement> & { label?: string };
 export default function Input({ className, label, ...rest }: Props) {
   return (
@@ -7,7 +8,7 @@ export default function Input({ className, label, ...rest }: Props) {
       {label && <span className="text-sm opacity-80">{label}</span>}
       <input
         className={clsx(
-          "input px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white/90 dark:bg-white/5",
+          "px-3 py-2 rounded border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] placeholder:opacity-70 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2",
           className
         )}
         {...rest}
