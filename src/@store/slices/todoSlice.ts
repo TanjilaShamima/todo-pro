@@ -1,6 +1,7 @@
 // src/store/slices/todoSlice.ts
+import { getToken } from '@/@lib/tokens'
 import { TodoInput } from '@/@schemas/zodSchema'
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
 export type Todo = {
@@ -23,15 +24,22 @@ const initialState: TodosState = { items: [], loading: false, error: null }
 
 // Thunks (using fetch with mock API)
 export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-  const res = await fetch('/api/todos')
+  const token = getToken()
+  const res = await fetch('/api/todos', {
+    headers: token ? { authorization: `Bearer ${token}` } : undefined,
+  })
   if (!res.ok) throw new Error('Failed to fetch')
   return (await res.json()).items as Todo[]
 })
 
 export const createTodo = createAsyncThunk('todos/createTodo', async (todo: TodoInput) => {
+  const token = getToken()
   const res = await fetch('/api/todos', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
     body: JSON.stringify(todo),
   })
   if (!res.ok) throw new Error('Failed to create')

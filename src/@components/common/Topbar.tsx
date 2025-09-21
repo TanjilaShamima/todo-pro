@@ -14,7 +14,7 @@ export default function Topbar() {
   const theme = useSelector((s: RootState) => s.ui.theme);
 
   return (
-    <header className="sticky top-0 z-10 bg-app-80 bg-primary-bg border-b py-2">
+    <header className="sticky top-0 z-40 isolate bg-primary-bg border-b py-2">
       <div className="max-w-5xl mx-auto px-4 py-2 flex items-center gap-3 justify-between">
         <Link href="/app/todos" className="font-semibold text-app">
           Todo Pro
@@ -37,7 +37,12 @@ export default function Topbar() {
           {user ? (
             <Button onClick={() => dispatch(logout())}>Logout</Button>
           ) : (
-            <Button className="px-5 py-1 !text-white" onClick={() => router.push("/login")}>Login</Button>
+            <Button
+              className="px-5 py-1 !text-white"
+              onClick={() => router.push("/login")}
+            >
+              Login
+            </Button>
           )}
         </div>
       </div>

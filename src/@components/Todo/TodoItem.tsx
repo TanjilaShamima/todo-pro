@@ -4,12 +4,14 @@ import {
   useUpdateTodoMutation,
 } from "@/@store/services/todoApi";
 import type { TodoType } from "@/@types/todo";
-import type { DraggableAttributes, SyntheticListenerMap } from "@dnd-kit/core";
+// Note: We accept generic HTML attributes/listeners from useSortable wrappers
+import Modal from "@/@components/ui/Modal";
 import type React from "react";
+import { useState } from "react";
 
 type DndProps = {
-  attributes?: DraggableAttributes;
-  listeners?: SyntheticListenerMap;
+  attributes?: React.HTMLAttributes<HTMLElement>;
+  listeners?: Record<string, unknown>;
   setNodeRef?: (el: HTMLElement | null) => void;
   style?: React.CSSProperties;
 };
@@ -23,6 +25,7 @@ export default function TodoItem({
 }: { todo: TodoType } & DndProps) {
   const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
+  const [confirmOpen, setConfirmOpen] = useState(false);
   return (
     <li
       ref={setNodeRef}
@@ -54,14 +57,31 @@ export default function TodoItem({
         <div className="font-medium">{todo.title}</div>
         <div className="text-sm opacity-80">{todo.description}</div>
       </div>
-      <button
-        className="btn btn-danger"
-        onClick={() => {
-          if (confirm("Delete?")) deleteTodo(todo.id);
-        }}
-      >
+      <button className="btn btn-danger" onClick={() => setConfirmOpen(true)}>
         Delete
       </button>
+
+      <Modal
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        title="Confirm delete"
+      >
+        <p className="mb-4">Are you sure you want to delete this todo?</p>
+        <div className="flex justify-end gap-2">
+          <button className="btn" onClick={() => setConfirmOpen(false)}>
+            Cancel
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              deleteTodo(todo.id);
+              setConfirmOpen(false);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </Modal>
     </li>
   );
 }

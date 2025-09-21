@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
+import Skleton from "@/@components/common/Skleton";
 import Button from "@/@components/ui/Button";
 import Input from "@/@components/ui/Input";
+import PasswordInput from "@/@components/ui/PasswordInput";
 import { getToken } from "@/@lib/tokens";
 import { LoginInput, loginSchema } from "@/@schemas/zodSchema";
 import { loginSuccess } from "@/@store/slices/authSlice";
@@ -35,11 +37,20 @@ export default function LoginFeature() {
       body: JSON.stringify(values),
     });
     if (res.ok) {
-      const data = await res.json();
-      dispatch(loginSuccess(data));
-      router.push("/app/todos");
+      try {
+        const data = await res.json();
+        dispatch(loginSuccess(data));
+        router.push("/app/todos");
+      } catch {
+        setSubmitError("Unexpected server response. Please try again.");
+      }
     } else {
-      setSubmitError("Invalid email or password.");
+      let msg = "Invalid email or password.";
+      try {
+        const txt = await res.text();
+        if (txt) msg = txt;
+      } catch {}
+      setSubmitError(msg);
     }
   }
 
@@ -71,9 +82,8 @@ export default function LoginFeature() {
             </p>
           )}
 
-          <Input
+          <PasswordInput
             label="Password"
-            type="password"
             placeholder="Your password"
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? "password-error" : undefined}
@@ -86,7 +96,13 @@ export default function LoginFeature() {
           )}
 
           <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
-            {isSubmitting ? "Signing in…" : "Sign in"}
+            {isSubmitting ? (
+              <span className="inline-flex items-center gap-2">
+                <Skleton className="h-4 w-4 rounded-full" /> Signing in…
+              </span>
+            ) : (
+              "Sign in"
+            )}
           </Button>
         </form>
         <p className="mt-4 text-sm opacity-80">

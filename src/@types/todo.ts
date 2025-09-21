@@ -1,5 +1,6 @@
 export type TodoType = {
     id: string
+    userId?: string
     title: string
     description?: string
     status: 'todo' | 'in_progress' | 'done'
@@ -7,4 +8,5 @@ export type TodoType = {
     tags?: string[]
     dueDate?: string
     createdAt: string
+    updatedAt?: string
 }

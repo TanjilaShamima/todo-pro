@@ -20,7 +20,7 @@ export const todosApi = createApi({
     tagTypes: ['Todos'],
     endpoints: (b) => ({
         listTodos: b.query<Paginated<TodoType>, ListParams | void>({
-            query: (p) => ({ url: '/todos', params: { limit: 5, ...(p || {}) } }),
+            query: (p) => ({ url: '/todos', params: { limit: 10, ...(p || {}) } }),
             providesTags: (res) => res?.items ? [
                 ...res.items.map(t => ({ type: 'Todos' as const, id: t.id })),
                 { type: 'Todos' as const, id: 'LIST' }

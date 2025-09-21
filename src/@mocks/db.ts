@@ -1,26 +1,31 @@
 import { TodoType } from '@/@types/todo';
-import { faker } from '@faker-js/faker'
 export type User = { id: string; name: string; email: string; password: string }
+export type Session = { token: string; userId: string; exp: number }
+
 export const db = {
     users: [] as User[],
-    todos: [] as TodoType[]
+    todos: [] as TodoType[],
+    sessions: [] as Session[],
 }
 
-
-// seed
-for (let i = 0; i < 20; i++) {
-    db.todos.push({
-        id: faker.string.uuid(),
-        title: faker.hacker.verb() + ' ' + faker.hacker.noun(),
-        description: faker.hacker.phrase(),
-        status: faker.helpers.arrayElement(['todo', 'in_progress', 'done']),
-        priority: faker.helpers.arrayElement(['low', 'medium', 'high']),
-        tags: faker.helpers.arrayElements(['work', 'home', 'urgent', 'later'], { min: 0, max: 3 }),
-        dueDate: faker.date.soon().toISOString(),
-        createdAt: faker.date.recent().toISOString()
-    })
-}
-
+// Acceptance prefers empty initial todos per user
 
 export const delay = (ms: number) => new Promise(r => setTimeout(r, ms))
-export function maybeFail() { if (Math.random() < 0.12) { const e = new Error('Random failure'); (e as any).status = 500; throw e } }
+export function maybeFail() { /* disabled random failure for deterministic dev */ }
+
+export function createSession(userId: string): Session {
+    const token = crypto.randomUUID()
+    const exp = Date.now() + 24 * 60 * 60 * 1000
+    const s: Session = { token, userId, exp }
+    db.sessions.push(s)
+    return s
+}
+
+export function getSessionFromHeader(h: Headers): Session | null {
+    const auth = h.get('authorization') || ''
+    const token = auth.startsWith('Bearer ') ? auth.split(' ')[1] : ''
+    if (!token) return null
+    const s = db.sessions.find(x => x.token === token) || null
+    if (!s || Date.now() > s.exp) return null
+    return s
+}

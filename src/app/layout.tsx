@@ -1,11 +1,13 @@
 import MSWLoader from "@/@components/common/MSWLoader";
 import ThemeClient from "@/@components/common/ThemeClient";
+import Topbar from "@/@components/common/Topbar";
 import { ReduxProvider } from "@/@store/ReduxProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import Topbar from "@/@components/common/Topbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +36,9 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <ThemeClient />
-                  <Topbar />
-          <MSWLoader />
+          <Topbar />
+          {/* <MSWLoader /> */}
+          <ToastContainer position="top-right" theme="dark" autoClose={2500} />
           <Suspense fallback={<div className="p-6">Loading…</div>}>
             {children}
           </Suspense>

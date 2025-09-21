@@ -1,5 +1,8 @@
 "use client";
+import Skleton from "@/@components/common/Skleton";
 import Pagination from "@/@components/ui/Pagination";
+import { useMswReady } from "@/@lib/useMswReady";
+import type { RootState } from "@/@store";
 import { useListTodosQuery } from "@/@store/services/todoApi";
 import {
   closestCenter,
@@ -19,6 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 
 type Props = {
@@ -29,12 +33,13 @@ type Props = {
 };
 
 export default function TodoList({ page, q, status, sort }: Props) {
-  const { data, isLoading, isError } = useListTodosQuery({
-    page,
-    q,
-    status,
-    sort,
-  });
+  const mswReady = useMswReady();
+  const { booted, token } = useSelector((s: RootState) => s.auth);
+  const canQuery = mswReady && booted && !!token;
+  const { data, isLoading, isError } = useListTodosQuery(
+    { page, q, status, sort },
+    { skip: !canQuery }
+  );
 
   // Local ordered items state for DnD without touching server
   const [ordered, setOrdered] = useState(() => data?.items ?? []);
@@ -62,8 +67,25 @@ export default function TodoList({ page, q, status, sort }: Props) {
     // TODO: Optionally persist order via API or Redux slice
   }
 
-  if (isLoading) return <p>Loading…</p>;
-  if (isError)
+  if (isLoading)
+    return (
+      <ul className="divide-y">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <li key={i} className="py-3">
+            <div className="flex items-center gap-3">
+              <Skleton className="h-5 w-full" />
+              <Skleton className="h-5 w-full" />
+              <div className="flex-1">
+                <Skleton className="h-4 w-1/3 mb-2" />
+                <Skleton className="h-3 w-1/2" />
+              </div>
+              <Skleton className="h-8 w-16" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
+  if (canQuery && isError)
     return (
       <p role="alert" className="text-red-600">
         Failed to load todos.
@@ -106,7 +128,7 @@ export default function TodoList({ page, q, status, sort }: Props) {
 
 type SortableProps = {
   attributes: React.HTMLAttributes<HTMLElement>;
-  listeners: Record<string, unknown>;
+  listeners?: Record<string, unknown>;
   setNodeRef: (el: HTMLElement | null) => void;
   style: React.CSSProperties;
 };
