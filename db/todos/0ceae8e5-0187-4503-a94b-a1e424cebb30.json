@@ -1,0 +1,12 @@
+{
+  "id": "0ceae8e5-0187-4503-a94b-a1e424cebb30",
+  "userId": "c1e0214f-ef63-4155-b0c2-57d0fa421fa9",
+  "createdAt": "2025-09-21T09:19:31.819Z",
+  "updatedAt": "2025-09-21T09:19:31.819Z",
+  "title": "test-3",
+  "description": "test-3",
+  "status": "todo",
+  "priority": "medium",
+  "tags": [],
+  "dueDate": "2025-09-22T11:21:00.000Z"
+}

@@ -8,6 +8,7 @@ import type { TodoType } from "@/@types/todo";
 import Modal from "@/@components/ui/Modal";
 import type React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type DndProps = {
   attributes?: React.HTMLAttributes<HTMLElement>;
@@ -26,12 +27,14 @@ export default function TodoItem({
   const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const router = useRouter();
   return (
     <li
       ref={setNodeRef}
       style={style}
       {...attributes}
       className="py-3 flex items-start gap-3"
+      onClick={() => router.push(`/app/todos/${todo.id}`)}
     >
       <button
         type="button"
@@ -57,7 +60,7 @@ export default function TodoItem({
         <div className="font-medium">{todo.title}</div>
         <div className="text-sm opacity-80">{todo.description}</div>
       </div>
-      <button className="btn btn-danger" onClick={() => setConfirmOpen(true)}>
+      <button className="btn btn-danger cursor-pointer" onClick={() => setConfirmOpen(true)}>
         Delete
       </button>
 

@@ -9,7 +9,7 @@ export default function TodoDetailsFeature({ id }: { id: string }) {
   if (!data) return <p>Todo not found.</p>;
 
   return (
-    <div className="max-w-xl mx-auto space-y-3">
+    <div className="max-w-xl mx-auto space-y-3 my-12">
       <h1 className="text-2xl font-bold">{data.title}</h1>
       <p className="text-gray-500">{data.description}</p>
       <p>Status: {data.status}</p>
