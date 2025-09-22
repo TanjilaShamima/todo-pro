@@ -15,9 +15,9 @@ export type TodoRec = {
     updatedAt: string
 }
 
-export type ListParams = { userId: string; page?: number; limit?: number; q?: string; status?: TodoRec['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority' }
+export type ListParams = { userId: string; page?: number; limit?: number; q?: string; status?: TodoRec['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority'; priority?: NonNullable<TodoRec['priority']> }
 
-export async function listTodos({ userId, page = 1, limit = 10, q = '', status = 'all', sort = 'createdAt' }: ListParams) {
+export async function listTodos({ userId, page = 1, limit = 10, q = '', status = 'all', sort = 'createdAt', priority }: ListParams) {
     const files = await listFiles(TODOS_DIR)
     let items: TodoRec[] = []
     for (const f of files) {
@@ -27,7 +27,24 @@ export async function listTodos({ userId, page = 1, limit = 10, q = '', status =
     const ql = q.toLowerCase()
     if (ql) items = items.filter(t => `${t.title} ${t.description ?? ''}`.toLowerCase().includes(ql))
     if (status !== 'all') items = items.filter(t => t.status === status)
-    items.sort((a, b) => (a[sort] as string) > (b[sort] as string) ? -1 : 1)
+    if (priority) items = items.filter(t => t.priority === priority)
+    items.sort((a, b) => {
+        if (sort === 'dueDate') {
+            const ad = a.dueDate ? new Date(a.dueDate).getTime() : Number.POSITIVE_INFINITY
+            const bd = b.dueDate ? new Date(b.dueDate).getTime() : Number.POSITIVE_INFINITY
+            return ad - bd // earliest first; items without dueDate go last
+        }
+        if (sort === 'priority') {
+            const rank: Record<NonNullable<TodoRec['priority']>, number> = { high: 0, medium: 1, low: 2 }
+            const ar = a.priority ? rank[a.priority] : 3
+            const br = b.priority ? rank[b.priority] : 3
+            return ar - br // high -> medium -> low -> none
+        }
+        // default: createdAt newest first (descending)
+        const av = String(a[sort] ?? '')
+        const bv = String(b[sort] ?? '')
+        return av > bv ? -1 : av < bv ? 1 : 0
+    })
 
     const start = (page - 1) * limit
     const paged = items.slice(start, start + limit)

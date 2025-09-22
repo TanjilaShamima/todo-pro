@@ -20,6 +20,9 @@ export default function TodosFeature() {
   const [sort, setSort] = useState<"createdAt" | "dueDate" | "priority">(
     "createdAt"
   );
+  const [priority, setPriority] = useState<"all" | "low" | "medium" | "high">(
+    "all"
+  );
   const [limit, setLimit] = useState<number | "all">(10);
   useEffect(() => {
     const goto = (e: Event) => {
@@ -54,32 +57,51 @@ export default function TodosFeature() {
           </div>
           <div className="w-full mb-3 lg:mb-0">
             <label className="text-sm opacity-80">
-            Limit
-            <select
-              className="input border rounded-md px-3 py-2 ml-2"
-              value={String(limit)}
-              onChange={(e) => {
-                const v = e.target.value;
-                setLimit(v === "all" ? "all" : Number(v));
-              }}
-            >
-              <option className="text-black" value="5">5</option>
-              <option className="text-black " value="10">10</option>
-              <option className="text-black" value="15">15</option>
-              <option className="text-black" value="20">20</option>
-              <option className="text-black" value="all">All</option>
-            </select>
-          </label>
+              Limit
+              <select
+                className="input border rounded-md px-3 py-2 ml-2"
+                value={String(limit)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setLimit(v === "all" ? "all" : Number(v));
+                }}
+              >
+                <option className="text-black" value="5">
+                  5
+                </option>
+                <option className="text-black " value="10">
+                  10
+                </option>
+                <option className="text-black" value="15">
+                  15
+                </option>
+                <option className="text-black" value="20">
+                  20
+                </option>
+                <option className="text-black" value="all">
+                  All
+                </option>
+              </select>
+            </label>
           </div>
           <TodoFilter
             status={status}
             onStatus={setStatus}
             sort={sort}
             onSort={setSort}
+            priority={priority}
+            onPriority={setPriority}
           />
         </div>
 
-        <TodoList page={page} q={q} status={status} sort={sort} limit={limit} />
+        <TodoList
+          page={page}
+          q={q}
+          status={status}
+          sort={sort}
+          limit={limit}
+          priority={priority}
+        />
       </main>
       <Modal open={open} onClose={() => setOpen(false)} title="Create Todo">
         <TodoForm onSuccess={() => setOpen(false)} />

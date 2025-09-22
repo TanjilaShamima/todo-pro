@@ -14,6 +14,7 @@ export const todoHandlers = [
         const q = (url.searchParams.get('q') ?? '').toLowerCase()
         const status = url.searchParams.get('status') ?? 'all'
         const sortParam = url.searchParams.get('sort') ?? 'createdAt'
+        const priorityParam = url.searchParams.get('priority') as 'low' | 'medium' | 'high' | null
         const sortVals = ['createdAt', 'dueDate', 'priority'] as const
         type SortKey = typeof sortVals[number]
         const sort: SortKey = (sortVals as readonly string[]).includes(sortParam) ? (sortParam as SortKey) : 'createdAt'
@@ -22,8 +23,27 @@ export const todoHandlers = [
         let items = db.todos.filter(t => t.userId === sess.userId)
         if (q) items = items.filter(t => (t.title + t.description).toLowerCase().includes(q))
         if (status !== 'all') items = items.filter(t => t.status === status)
-        const val = (t: Record<string, unknown> & { priority?: 'low' | 'medium' | 'high'; createdAt?: string; dueDate?: string }, k: SortKey): string => (k === 'priority' ? (t.priority ?? '') : (typeof t[k] === 'string' ? (t[k] as string) : ''))
-        items.sort((a, b) => (val(a, sort) > val(b, sort) ? -1 : 1))
+        if (priorityParam) items = items.filter(t => t.priority === priorityParam)
+        // Custom sort:
+        // - dueDate: earliest first; items without due go last
+        // - priority: High -> Medium -> Low -> none
+        // - createdAt: newest first (descending)
+        items.sort((a, b) => {
+            if (sort === 'dueDate') {
+                const ad = a.dueDate ? new Date(a.dueDate).getTime() : Number.POSITIVE_INFINITY
+                const bd = b.dueDate ? new Date(b.dueDate).getTime() : Number.POSITIVE_INFINITY
+                return ad - bd
+            }
+            if (sort === 'priority') {
+                const rank: Record<'high' | 'medium' | 'low', number> = { high: 0, medium: 1, low: 2 }
+                const ar = a.priority ? rank[a.priority] ?? 3 : 3
+                const br = b.priority ? rank[b.priority] ?? 3 : 3
+                return ar - br
+            }
+            const av = String(a.createdAt ?? '')
+            const bv = String(b.createdAt ?? '')
+            return av > bv ? -1 : av < bv ? 1 : 0
+        })
 
 
         const pageSize = limit

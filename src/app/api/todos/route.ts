@@ -20,7 +20,8 @@ export async function GET(req: Request) {
         const sortVals = ['createdAt', 'dueDate', 'priority'] as const
         const isSort = (v: string): v is typeof sortVals[number] => (sortVals as readonly string[]).includes(v)
         const sort = isSort(sortParam) ? sortParam : 'createdAt'
-        const res = await listTodos({ userId: auth.userId, page, limit, q, status, sort })
+        const priorityParam = url.searchParams.get('priority') as 'low' | 'medium' | 'high' | null
+        const res = await listTodos({ userId: auth.userId, page, limit, q, status, sort, ...(priorityParam ? { priority: priorityParam } : {}) })
         return NextResponse.json(res)
     } catch (e) {
         if (process.env.NODE_ENV !== 'production') console.warn('GET /api/todos error:', e)
