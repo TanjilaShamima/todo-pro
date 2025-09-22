@@ -16,6 +16,20 @@ export default function TodoEditModal({
 }) {
   const [updateTodo] = useUpdateTodoMutation();
 
+  // Format ISO string to local "YYYY-MM-DDTHH:mm" for datetime-local input
+  const toLocalInputValue = (iso?: string) => {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const mi = pad(d.getMinutes());
+    return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
+  };
+
   return (
     <Modal open={open} onClose={onClose} title="Edit todo">
       <form
@@ -61,7 +75,7 @@ export default function TodoEditModal({
       >
         <label className="text-sm opacity-80">Title (read-only)</label>
         <input
-          className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--surface)]/60"
+          className="px-3 py-2 rounded border border-[var(--border)] bg-white text-black"
           value={todo.title}
           readOnly
         />
@@ -70,7 +84,7 @@ export default function TodoEditModal({
         <textarea
           name="description"
           defaultValue={todo.description || ""}
-          className="px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
+          className="px-3 py-2 rounded border border-[var(--border)] bg-white text-black"
           maxLength={500}
         />
 
@@ -80,7 +94,7 @@ export default function TodoEditModal({
             <select
               name="status"
               defaultValue={todo.status}
-              className="w-full px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
+              className="w-full px-3 py-2 rounded border border-[var(--border)] bg-white text-black"
             >
               <option value="todo">Todo</option>
               <option value="in_progress">In Progress</option>
@@ -92,7 +106,7 @@ export default function TodoEditModal({
             <select
               name="priority"
               defaultValue={todo.priority || ""}
-              className="w-full px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
+              className="w-full px-3 py-2 rounded border border-[var(--border)] bg-white text-black"
             >
               <option value="">None</option>
               <option value="low">Low</option>
@@ -107,12 +121,8 @@ export default function TodoEditModal({
           <input
             name="dueDate"
             type="datetime-local"
-            defaultValue={
-              todo.dueDate
-                ? new Date(todo.dueDate).toISOString().slice(0, 16)
-                : ""
-            }
-            className="w-full px-3 py-2 rounded border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
+            defaultValue={toLocalInputValue(todo.dueDate)}
+            className="w-full px-3 py-2 rounded border border-[var(--border)] bg-white text-black"
           />
         </label>
 
