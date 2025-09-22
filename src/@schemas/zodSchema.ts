@@ -14,8 +14,8 @@ export const registerSchema = loginSchema.extend({
 
 
 export const todoSchema = z.object({
-    title: z.string().min(1),
-    description: z.string().optional(),
+    title: z.string().min(1).max(150),
+    description: z.string().max(500).optional(),
     status: z.enum(['todo', 'in_progress', 'done']).default('todo'),
     priority: z.enum(['low', 'medium', 'high']).optional().default('medium'),
     tags: z.array(z.string()).optional().default([]),

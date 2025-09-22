@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
 
-export type ListParams = { page?: number; limit?: number; q?: string; status?: TodoType['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority' }
+export type ListParams = { page?: number; limit?: number | 'all'; q?: string; status?: TodoType['status'] | 'all'; sort?: 'createdAt' | 'dueDate' | 'priority' }
 export type Paginated<T> = { items: T[]; page: number; pageSize: number; total: number }
 
 export const todosApi = createApi({

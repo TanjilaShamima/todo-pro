@@ -7,6 +7,7 @@ import { createTodo } from "@/@store/slices/todoSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
@@ -24,11 +25,18 @@ export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
   return (
     <form
       onSubmit={handleSubmit(async (v) => {
-        const parsed: TodoInput = todoSchema.parse(v);
-        await dispatch(createTodo(parsed)).unwrap();
-        onSuccess?.();
-        dispatch(todosApi.util.invalidateTags([{ type: "Todos", id: "LIST" }]));
-        reset();
+        try {
+          const parsed: TodoInput = todoSchema.parse(v);
+          await dispatch(createTodo(parsed)).unwrap();
+          toast.success("Todo created successfully");
+          onSuccess?.();
+          dispatch(
+            todosApi.util.invalidateTags([{ type: "Todos", id: "LIST" }])
+          );
+          reset();
+        } catch {
+          toast.error("Failed to create todo");
+        }
       })}
       className="grid gap-3 bg-white p-4 rounded-lg border border-gray-200"
     >

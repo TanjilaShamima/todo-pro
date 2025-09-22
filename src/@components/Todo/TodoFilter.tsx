@@ -9,7 +9,7 @@ export default function TodoFilter({ status, onStatus, sort, onSort }: Props) {
   return (
     <>
       <select
-        className="input border rounded-md px-3"
+        className="input border rounded-md px-3 py-2"
         value={status}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           onStatus(e.target.value as Props["status"])
@@ -21,7 +21,7 @@ export default function TodoFilter({ status, onStatus, sort, onSort }: Props) {
         <option className="text-black" value="done">Done</option>
       </select>
       <select
-        className="input border rounded-md px-3"
+        className="input border rounded-md px-3 py-2"
         value={sort}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           onSort(e.target.value as Props["sort"])

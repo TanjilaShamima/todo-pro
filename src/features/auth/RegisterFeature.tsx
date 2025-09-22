@@ -13,6 +13,7 @@ import PasswordInput from "@/@components/ui/PasswordInput";
 import { getToken } from "@/@lib/tokens";
 import { RegisterInput, registerSchema } from "@/@schemas/zodSchema";
 import { loginSuccess } from "@/@store/slices/authSlice";
+import { toast } from "react-toastify";
 
 export default function RegisterFeature() {
   const {
@@ -40,12 +41,15 @@ export default function RegisterFeature() {
       try {
         const data = await res.json();
         dispatch(loginSuccess(data));
+        toast.success("Account created");
         router.push("/app/todos");
       } catch {
         setSubmitError("Unexpected server response. Please try again.");
+        toast.error("Registration failed: invalid response");
       }
     } else if (res.status === 409) {
       setSubmitError("Email already exists.");
+      toast.error("Email already exists");
     } else {
       let msg = "Registration failed. Please try again.";
       try {
@@ -53,6 +57,7 @@ export default function RegisterFeature() {
         if (txt) msg = txt;
       } catch {}
       setSubmitError(msg);
+      toast.error(msg);
     }
   }
 

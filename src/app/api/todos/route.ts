@@ -9,7 +9,8 @@ export async function GET(req: Request) {
         const auth = await requireAuth(req.headers.get('authorization'))
         const url = new URL(req.url)
         const page = Number(url.searchParams.get('page') ?? '1')
-        const limit = Number(url.searchParams.get('limit') ?? '10')
+        const limitParam = url.searchParams.get('limit') ?? '10'
+        const limit = limitParam === 'all' ? Number.MAX_SAFE_INTEGER : Number(limitParam)
         const q = url.searchParams.get('q') ?? ''
         const statusParam = (url.searchParams.get('status') ?? 'all')
         const statusVals = ['todo', 'in_progress', 'done', 'all'] as const

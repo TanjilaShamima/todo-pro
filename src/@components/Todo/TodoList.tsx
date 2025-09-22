@@ -30,14 +30,15 @@ type Props = {
   q: string;
   status: "all" | "todo" | "in_progress" | "done";
   sort: "createdAt" | "dueDate" | "priority";
+  limit?: number | "all";
 };
 
-export default function TodoList({ page, q, status, sort }: Props) {
+export default function TodoList({ page, q, status, sort, limit }: Props) {
   const mswReady = useMswReady();
   const { booted, token } = useSelector((s: RootState) => s.auth);
   const canQuery = mswReady && booted && !!token;
   const { data, isLoading, isError } = useListTodosQuery(
-    { page, q, status, sort },
+    { page, q, status, sort, ...(limit ? { limit } : {}) },
     { skip: !canQuery }
   );
 

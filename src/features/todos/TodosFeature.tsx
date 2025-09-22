@@ -20,6 +20,7 @@ export default function TodosFeature() {
   const [sort, setSort] = useState<"createdAt" | "dueDate" | "priority">(
     "createdAt"
   );
+  const [limit, setLimit] = useState<number | "all">(10);
   useEffect(() => {
     const goto = (e: Event) => {
       const detail = (e as CustomEvent<{ p: number }>).detail;
@@ -47,8 +48,27 @@ export default function TodosFeature() {
           </Button>
         </div>
 
-        <div className="w-full flex flex-wrap justify-between mb-10">
-          <TodoSearch value={q} onChange={setQ} />
+        <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-10">
+          <div className="flex items-center gap-3">
+            <TodoSearch value={q} onChange={setQ} />
+          </div>
+          <label className="text-sm opacity-80">
+            Limit
+            <select
+              className="input border rounded-md px-3 py-2 ml-2"
+              value={String(limit)}
+              onChange={(e) => {
+                const v = e.target.value;
+                setLimit(v === "all" ? "all" : Number(v));
+              }}
+            >
+              <option className="text-black" value="5">5</option>
+              <option className="text-black " value="10">10</option>
+              <option className="text-black" value="15">15</option>
+              <option className="text-black" value="20">20</option>
+              <option className="text-black" value="all">All</option>
+            </select>
+          </label>
           <TodoFilter
             status={status}
             onStatus={setStatus}
@@ -57,7 +77,7 @@ export default function TodosFeature() {
           />
         </div>
 
-        <TodoList page={page} q={q} status={status} sort={sort} />
+        <TodoList page={page} q={q} status={status} sort={sort} limit={limit} />
       </main>
       <Modal open={open} onClose={() => setOpen(false)} title="Create Todo">
         <TodoForm onSuccess={() => setOpen(false)} />

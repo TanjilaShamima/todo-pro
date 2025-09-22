@@ -21,7 +21,7 @@ export default function Topbar() {
         </Link>
         <div className="flex items-center gap-3">
           <Button
-            variant="selected"
+            variant="primary"
             aria-label="Toggle theme"
             title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
             onClick={() => dispatch(toggleTheme())}
@@ -35,9 +35,12 @@ export default function Topbar() {
             </span>
           )}
           {user ? (
-            <Button onClick={() => dispatch(logout())}>Logout</Button>
+            <Button variant="selected" onClick={() => dispatch(logout())}>
+              Logout
+            </Button>
           ) : (
             <Button
+              variant="selected"
               className="px-5 py-1 !text-white"
               onClick={() => router.push("/login")}
             >

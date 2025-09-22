@@ -13,6 +13,7 @@ import PasswordInput from "@/@components/ui/PasswordInput";
 import { getToken } from "@/@lib/tokens";
 import { LoginInput, loginSchema } from "@/@schemas/zodSchema";
 import { loginSuccess } from "@/@store/slices/authSlice";
+import { toast } from "react-toastify";
 
 export default function LoginFeature() {
   const {
@@ -40,9 +41,11 @@ export default function LoginFeature() {
       try {
         const data = await res.json();
         dispatch(loginSuccess(data));
+        toast.success("Logged in successfully");
         router.push("/app/todos");
       } catch {
         setSubmitError("Unexpected server response. Please try again.");
+        toast.error("Login failed: invalid response");
       }
     } else {
       let msg = "Invalid email or password.";
@@ -51,6 +54,7 @@ export default function LoginFeature() {
         if (txt) msg = txt;
       } catch {}
       setSubmitError(msg);
+      toast.error(msg);
     }
   }
 

@@ -24,6 +24,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
       role="dialog"
       aria-modal="true"
       aria-label={title || "Dialog"}
+      onClick={(e) => e.stopPropagation()}
     >
       <div
         className="absolute inset-0 z-40 bg-black/50"
@@ -33,7 +34,11 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
       <div className="relative z-50 w-auto max-w-auto rounded bg-white shadow p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-black">{title}</h2>
-          <button className="btn text-black" onClick={onClose} aria-label="Close">
+          <button
+            className="btn text-black"
+            onClick={onClose}
+            aria-label="Close"
+          >
             ✕
           </button>
         </div>
