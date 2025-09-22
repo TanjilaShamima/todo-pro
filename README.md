@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# Todo Pro
 
-First, run the development server:
+Modern, full‑stack Task Manager built with Next.js 15, React 19, TypeScript, Redux Toolkit + RTK Query, and Zod. Features light/dark theming, file‑backed API routes for local persistence, pagination, search/filter, and a polished UI.
+
+</div>
+
+## ✨ Features
+
+- Auth: Register/Login with file‑backed sessions (Node runtime)
+- Todos CRUD: create, list, search, filter, sort, paginate (5/10/15/20/all)
+- Details view with glassmorphism + skeleton while loading
+- Inline status toggle, edit modal, delete confirmation
+- Priority, status, and due date with overdue indicator
+- Theming via CSS variables; consistent tokens for light/dark
+- MSW for optional dev mocking
+- Vitest + RTL tests
+
+## 🧱 Tech Stack
+
+- Next.js 15 (App Router), React 19, TypeScript
+- Redux Toolkit + RTK Query
+- Zod for validation
+- Tailwind v4 utility classes + custom CSS variables
+- MSW, Vitest, React Testing Library
+
+## 📁 Folder Structure
+
+```
+todo-pro-by-tanjila/
+├─ app/
+│  ├─ layout.tsx            # Root layout, providers, Topbar, ToastContainer
+│  ├─ globals.css           # Theme tokens and global styles
+│  ├─ app/
+│  │  └─ todos/
+│  │     ├─ page.tsx        # Todos page (feature composition)
+│  │     └─ [id]/page.tsx   # Todo details route
+│  └─ api/
+│     ├─ auth/              # Auth endpoints (register/login)
+│     └─ todos/             # Todos CRUD endpoints
+├─ public/                  # Static assets
+├─ src/
+│  ├─ @components/
+│  │  ├─ common/            # MSW loader, Skeleton, ThemeClient, Topbar
+│  │  ├─ Todo/              # Todo UI (Item, List, Form, EditModal, Search)
+│  │  └─ ui/                # Button, Input, Modal, Dropdown, Pagination, Search
+│  ├─ @features/            # Auth and Todos feature composites
+│  ├─ @lib/                 # Tokens, client utils, server FS helpers
+│  ├─ @schemas/             # Zod schemas (auth, todo)
+│  ├─ @store/               # Redux store, slices, RTK Query services
+│  ├─ @mocks/               # MSW handlers and setup
+│  └─ @tests/               # Vitest + RTL tests
+├─ README.md                # This file
+└─ ARCHITECTURE.md          # Architecture & data flow overview
+```
+
+## 🚀 Getting Started
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Run the dev server (Next.js)
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` – start dev server
+- `npm run build` – production build
+- `npm start` – start prod server
+- `npm run lint` – run ESLint
+- `npm test` – run Vitest + RTL
 
-## Learn More
+## ⚙️ Environment
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 18+ recommended
+- APIs use Node runtime to read/write from a file‑backed “DB”. No external DB required.
+- Optional: `NEXT_PUBLIC_USE_MOCKS=true` to enable MSW in dev (see `MSWLoader`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧪 Testing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Use Vitest + React Testing Library:
 
-## Deploy on Vercel
+```bash
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🖌️ Theming
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Colors and tokens are defined with CSS variables in `app/globals.css`. Components use these tokens for light/dark support.
+
+## 🔒 Authentication
+
+Auth endpoints are under `app/api/auth`. A simple file‑based session is used for local development. Client stores the token and RTK Query adds it to requests.
+
+## 📦 Todos API
+
+- List: `GET /api/todos` with `page`, `limit`, `q`, `status`, `sort`
+- Get: `GET /api/todos/:id`
+- Create: `POST /api/todos`
+- Update: `PATCH /api/todos/:id`
+- Delete: `DELETE /api/todos/:id`
+
+Validation is done with Zod (see `src/@schemas/zodSchema.ts`).
+
+## 🗺️ More Docs
+
+See `ARCHITECTURE.md` for a deeper dive into modules, flows, and design choices.
