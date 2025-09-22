@@ -1,4 +1,3 @@
-import MSWLoader from "@/@components/common/MSWLoader";
 import ThemeClient from "@/@components/common/ThemeClient";
 import Topbar from "@/@components/common/Topbar";
 import { ReduxProvider } from "@/@store/ReduxProvider";
@@ -34,6 +33,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
+        {/* PWA manifest link */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
         <ReduxProvider>
           <ThemeClient />
           <Topbar />
@@ -43,6 +50,16 @@ export default function RootLayout({
             {children}
           </Suspense>
         </ReduxProvider>
+        {/* Minimal SW registration; ensure a service worker is present if needed */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}`,
+          }}
+        />
       </body>
     </html>
   );

@@ -48,11 +48,12 @@ export default function TodosFeature() {
           </Button>
         </div>
 
-        <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-10">
-          <div className="flex items-center gap-3">
+        <div className="w-full lg:flex flex-wrap items-center justify-between gap-3 mb-10">
+          <div className="w-full flex items-center gap-3 mb-3 lg:mb-0">
             <TodoSearch value={q} onChange={setQ} />
           </div>
-          <label className="text-sm opacity-80">
+          <div className="w-full mb-3 lg:mb-0">
+            <label className="text-sm opacity-80">
             Limit
             <select
               className="input border rounded-md px-3 py-2 ml-2"
@@ -69,6 +70,7 @@ export default function TodosFeature() {
               <option className="text-black" value="all">All</option>
             </select>
           </label>
+          </div>
           <TodoFilter
             status={status}
             onStatus={setStatus}

@@ -15,7 +15,8 @@ Modern, full‑stack Task Manager built with Next.js 15, React 19, TypeScript, R
 - Priority, status, and due date with overdue indicator
 - Theming via CSS variables; consistent tokens for light/dark
 - MSW for optional dev mocking
-- Vitest + RTL tests
+- Vitest + RTL tests, Playwright E2E
+- Basic PWA (manifest + service worker)
 
 ## 🧱 Tech Stack
 
@@ -39,7 +40,9 @@ todo-pro-by-tanjila/
 │  └─ api/
 │     ├─ auth/              # Auth endpoints (register/login)
 │     └─ todos/             # Todos CRUD endpoints
-├─ public/                  # Static assets
+├─ public/                  # Static assets, PWA files
+│  ├─ manifest.json         # Web App Manifest
+│  └─ sw.js                 # Service Worker (minimal)
 ├─ src/
 │  ├─ @components/
 │  │  ├─ common/            # MSW loader, Skeleton, ThemeClient, Topbar
@@ -51,6 +54,8 @@ todo-pro-by-tanjila/
 │  ├─ @store/               # Redux store, slices, RTK Query services
 │  ├─ @mocks/               # MSW handlers and setup
 │  └─ @tests/               # Vitest + RTL tests
+├─ tests-e2e/               # Playwright end‑to‑end tests
+├─ playwright.config.ts     # Playwright config
 ├─ README.md                # This file
 └─ ARCHITECTURE.md          # Architecture & data flow overview
 ```
@@ -78,6 +83,8 @@ Open http://localhost:3000.
 - `npm start` – start prod server
 - `npm run lint` – run ESLint
 - `npm test` – run Vitest + RTL
+- `npm run e2e` – run Playwright E2E tests
+- `npm run e2e:ui` – run Playwright in UI mode
 
 ## ⚙️ Environment
 
@@ -85,13 +92,33 @@ Open http://localhost:3000.
 - APIs use Node runtime to read/write from a file‑backed “DB”. No external DB required.
 - Optional: `NEXT_PUBLIC_USE_MOCKS=true` to enable MSW in dev (see `MSWLoader`).
 
-## 🧪 Testing
+## 🧪 Testing (Unit + E2E)
 
 Use Vitest + React Testing Library:
 
 ```bash
 npm test
 ```
+
+End‑to‑end tests with Playwright:
+
+```bash
+# one‑time browser install
+npx playwright install
+
+# run E2E tests
+npm run e2e
+
+# optional: interactive UI
+npm run e2e:ui
+```
+
+Covered flows (E2E):
+
+- Auth redirects (unauthenticated → /login) and login redirect to /app/todos
+- Todos CRUD (create with validation, update via modal, delete)
+- Filters/search update the list
+- Form validation errors render and UI enforces max lengths
 
 ## 🖌️ Theming
 
@@ -110,6 +137,15 @@ Auth endpoints are under `app/api/auth`. A simple file‑based session is used f
 - Delete: `DELETE /api/todos/:id`
 
 Validation is done with Zod (see `src/@schemas/zodSchema.ts`).
+
+## 📱 PWA
+
+This app ships a minimal PWA setup:
+
+- `public/manifest.json` and basic meta tags in `app/layout.tsx`
+- `public/sw.js` registered at runtime (network‑first fallback)
+
+Note: For production‑grade offline and caching, consider Workbox or a tailored caching strategy.
 
 ## 🗺️ More Docs
 

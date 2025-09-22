@@ -21,7 +21,7 @@ export default function ProtectedRoute({
 
   useEffect(() => {
     if (!booted) return;
-    if (token === null || !user) router.replace("/");
+    if (token === null || !user) router.replace("/login");
   }, [token, user, booted, router]);
   if (!booted)
     return (

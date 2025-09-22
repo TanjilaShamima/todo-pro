@@ -43,6 +43,7 @@ export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
       <input
         className="px-3 py-2 rounded border border-gray-300 bg-white text-black placeholder-black/60 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
         placeholder="Title"
+        maxLength={150}
         {...register("title")}
       />
       {errors.title && (
@@ -51,6 +52,7 @@ export default function TodoForm({ onSuccess }: { onSuccess?: () => void }) {
       <textarea
         className="px-3 py-2 rounded border border-gray-300 bg-white text-black placeholder-black/60 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 min-h-24"
         placeholder="Description"
+        maxLength={500}
         {...register("description")}
       />
       <div className="flex gap-3">
