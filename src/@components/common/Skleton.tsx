@@ -8,12 +8,12 @@ export default function Skleton({
   return (
     <div
       className={
-        "relative overflow-hidden rounded-md bg-[var(--surface)]/80 " +
+        "relative overflow-hidden rounded-md bg-[var(--skeleton-base)]/50 " +
         className
       }
       aria-hidden="true"
     >
-      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent dark:via-white/10" />
+      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-[var(--skeleton-highlight)] to-transparent" />
       <style jsx>{`
         @keyframes shimmer {
           100% {

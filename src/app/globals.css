@@ -24,6 +24,14 @@
   /* translucent white for light login card */
   --login-bg: #ffffffcc;
   --primary-bg: linear-gradient(to bottom right, #fff, #eff6ff, #f3e8ff);
+
+  /* Skeleton (light) */
+  --skeleton-base: #e5e7eb;
+  /* gray-200 */
+  --skeleton-highlight: #f3f4f6;
+  /* Input/text color for controls in light mode (black) */
+  --color-input: #000000;
+  /* gray-100 */
 }
 
 
@@ -51,6 +59,13 @@ html.dark {
   /* solid black for dark login card */
   --login-bg: #000000;
   --primary-bg: linear-gradient(to bottom right, #0b1220, #2b1a6a, #0b1220);
+
+  /* Skeleton (dark) */
+  --skeleton-base: #1f2937;
+  /* gray-800 */
+  --skeleton-highlight: rgba(255, 255, 255, 0.12);
+  /* Input/text color for controls in dark mode (white) */
+  --color-input: #ffffff;
 }
 
 /* Native color-scheme for form controls */
@@ -69,4 +84,9 @@ html:not(.dark) {
 
 .bg-grad-dark {
   background: linear-gradient(to bottom right, #0b1220, #2b1a6a, #0b1220);
+}
+
+/* Utility to use the theme primary background (supports gradients via shorthand) */
+.bg-primary-bg {
+  background: var(--primary-bg);
 }

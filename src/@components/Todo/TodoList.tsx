@@ -69,11 +69,10 @@ export default function TodoList({ page, q, status, sort }: Props) {
 
   if (isLoading)
     return (
-      <ul className="divide-y">
+      <ul className="">
         {Array.from({ length: 10 }).map((_, i) => (
           <li key={i} className="py-3">
             <div className="flex items-center gap-3">
-              <Skleton className="h-5 w-full" />
               <Skleton className="h-5 w-full" />
               <div className="flex-1">
                 <Skleton className="h-4 w-1/3 mb-2" />

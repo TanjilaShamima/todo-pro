@@ -30,10 +30,10 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative z-50 w-auto max-w-auto rounded bg-white dark:bg-neutral-900 shadow p-4">
+      <div className="relative z-50 w-auto max-w-auto rounded bg-white shadow p-4">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button className="btn" onClick={onClose} aria-label="Close">
+          <h2 className="text-lg font-semibold text-black">{title}</h2>
+          <button className="btn text-black" onClick={onClose} aria-label="Close">
             ✕
           </button>
         </div>
