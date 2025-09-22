@@ -16,7 +16,7 @@ export default function Topbar() {
   return (
     <header className="sticky top-0 z-40 isolate bg-primary-bg border-b py-2">
       <div className="max-w-5xl mx-auto px-4 py-2 flex items-center gap-3 justify-between">
-        <Link href="/app/todos" className="font-semibold text-app">
+        <Link href="/app/todos" className="font-semibold text-foreground">
           Todo Pro
         </Link>
         <div className="flex items-center gap-3">
@@ -30,7 +30,7 @@ export default function Topbar() {
             {theme === "light" ? "🌙 Dark" : "🌞 Light"}
           </Button>
           {user && (
-            <span className="text-xs sm:text-sm opacity-80 text-app hidden sm:inline">
+            <span className="text-xs sm:text-sm opacity-80 text-foreground hidden sm:inline">
               {user.name}
             </span>
           )}

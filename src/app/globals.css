@@ -11,6 +11,26 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
+  /* friendly aliases for utilities */
+  --color-login: var(--login-bg);
+  /* bg-login */
+  --color-app: var(--border);
+  /* border-app */
+  --color-input: var(--color-input);
+  /* text-input */
+  --color-button: var(--button-bg);
+  /* bg-button */
+  --color-button-foreground: var(--button-text);
+  /* text-button-foreground */
+
+  /* skeleton colors */
+  --color-skeleton-base: var(--skeleton-base);
+  --color-skeleton-highlight: var(--skeleton-highlight);
+
+  /* optional semantic accents (tokens usable as bg-accent, text-accent) */
+  --color-accent: var(--primary);
+  --color-accent-foreground: var(--primary-foreground);
+
   /* friendly aliases */
   --color-login: var(--login-bg);
   /* enables bg-login */
