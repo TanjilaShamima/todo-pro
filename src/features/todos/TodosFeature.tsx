@@ -48,7 +48,7 @@ export default function TodosFeature() {
           </Button>
         </div>
 
-        <div className="w-full lg:flex flex-wrap items-center justify-between gap-3 mb-10">
+        <div className="w-full lg:flex items-center justify-between gap-3 mb-10">
           <div className="w-full flex items-center gap-3 mb-3 lg:mb-0">
             <TodoSearch value={q} onChange={setQ} />
           </div>

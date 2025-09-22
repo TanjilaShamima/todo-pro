@@ -1,6 +1,6 @@
 import { listFiles, readJson, writeJson } from './fsdb'
 
-const TODOS_DIR = 'db/todos'
+const TODOS_DIR = 'public/db/todos'
 
 export type TodoRec = {
     id: string

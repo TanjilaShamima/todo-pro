@@ -1,6 +1,6 @@
 import { listFiles, readJson, writeJson } from './fsdb';
 
-const USERS_DIR = 'db/users'
+const USERS_DIR = 'public/db/users'
 
 export type UserRec = { id: string; name: string; email: string; password: string }
 

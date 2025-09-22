@@ -1,6 +1,6 @@
 import { readJson, writeJson } from './fsdb';
 
-const SESS_DIR = 'db/sessions'
+const SESS_DIR = 'public/db/sessions'
 
 export type SessionRec = { token: string; userId: string; exp: number }
 

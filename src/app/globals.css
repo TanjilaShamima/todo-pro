@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+/* Tailwind v4 design tokens mapped to our CSS variables */
+@theme inline {
+  /* core palette */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* friendly aliases */
+  --color-login: var(--login-bg);
+  /* enables bg-login */
+  --color-app: var(--border);
+  /* enables border-app */
+
+  /* optional semantic accents (tokens usable as bg-accent, text-accent) */
+  --color-accent: var(--primary);
+  --color-accent-foreground: var(--primary-foreground);
+}
+
 /* Theme tokens: single source of truth for light/dark colors */
 :root {
   /* base tokens (light) */
